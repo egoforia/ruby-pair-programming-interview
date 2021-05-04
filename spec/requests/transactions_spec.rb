@@ -13,15 +13,29 @@ require 'rails_helper'
 # sticking to rails and rspec-rails APIs to keep things simple and stable.
 
 RSpec.describe "/transactions", type: :request do
+  
+  let(:from_account) { create(:account_with_balance, balance: 100.0) }
+  let(:to_account) { create(:account) }
+
+  let(:amount) { 10.0 }
+
   # This should return the minimal set of attributes required to create a valid
   # Transaction. As you add validations to Transaction, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
-    skip("Add a hash of attributes valid for your model")
+    {
+      amount: amount,
+      from_account_id: from_account.id,
+      to_account_id: to_account.id
+    }
   }
 
   let(:invalid_attributes) {
-    skip("Add a hash of attributes invalid for your model")
+    {
+      amount: nil,
+      from_account_id: nil,
+      to_account_id: nil
+    }
   }
 
   # This should return the minimal set of values that should be in the headers
@@ -61,7 +75,7 @@ RSpec.describe "/transactions", type: :request do
         post transactions_url,
              params: { transaction: valid_attributes }, headers: valid_headers, as: :json
         expect(response).to have_http_status(:created)
-        expect(response.content_type).to match(a_string_including("application/json"))
+        expect(response.content_type).to match(a_string_including("application/json; charset=utf-8"))
       end
     end
 
@@ -77,7 +91,7 @@ RSpec.describe "/transactions", type: :request do
         post transactions_url,
              params: { transaction: invalid_attributes }, headers: valid_headers, as: :json
         expect(response).to have_http_status(:unprocessable_entity)
-        expect(response.content_type).to eq("application/json")
+        expect(response.content_type).to eq("application/json; charset=utf-8")
       end
     end
   end
@@ -101,7 +115,7 @@ RSpec.describe "/transactions", type: :request do
         patch transaction_url(transaction),
               params: { transaction: new_attributes }, headers: valid_headers, as: :json
         expect(response).to have_http_status(:ok)
-        expect(response.content_type).to match(a_string_including("application/json"))
+        expect(response.content_type).to match(a_string_including("application/json; charset=utf-8"))
       end
     end
 
@@ -111,7 +125,7 @@ RSpec.describe "/transactions", type: :request do
         patch transaction_url(transaction),
               params: { transaction: invalid_attributes }, headers: valid_headers, as: :json
         expect(response).to have_http_status(:unprocessable_entity)
-        expect(response.content_type).to eq("application/json")
+        expect(response.content_type).to eq("application/json; charset=utf-8")
       end
     end
   end
