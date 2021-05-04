@@ -18,18 +18,16 @@ RSpec.describe Transaction, type: :model do
   describe 'account balance validations' do
 
     context 'enough balance' do
-      let(:amount) { balance - 1 }
-      
-      it 'should have status = pending' do
+      it 'should have status = success' do
         subject.save
-        expect(subject.status).to eq("pending")
+        expect(subject.status).to eq("success")
       end
 
-      it 'should\'t change from_account balance' do
+      it 'should change from_account balance' do
         expect{ subject.save }.to change { from_account.balance }.by(-amount)
       end
 
-      it 'should\'t change to_account balance' do
+      it 'should change to_account balance' do
         expect{ subject.save }.to change { to_account.balance }.by(amount)
       end
     end
