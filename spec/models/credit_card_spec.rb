@@ -9,6 +9,7 @@ RSpec.describe CreditCard, type: :model do
   describe 'validations' do
     it { should validate_presence_of(:user) }
     it { should validate_presence_of(:last_digits) }
+    it { should validate_length_of(:last_digits).is_equal_to(4) }
     it { should validate_presence_of(:holder_name) }
     it { should validate_presence_of(:expiration_date) }
 
