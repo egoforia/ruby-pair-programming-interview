@@ -8,10 +8,12 @@ RSpec.describe Transaction, type: :model do
 
   let(:amount) { 1.0 }
 
-  subject { described_class.new(amount: amount, from_account: from_account, to_account: to_account) }
+  let(:transaction_type) { "transfer" }
+
+  subject { described_class.new(amount: amount, from_account: from_account, to_account: to_account, transaction_type: transaction_type) }
 
   describe 'associations' do
-    it { should belong_to(:from_account) }
+    it { should belong_to(:from_account).optional }
     it { should belong_to(:to_account) }
   end
 
@@ -26,37 +28,59 @@ RSpec.describe Transaction, type: :model do
     end
   end
 
-  describe 'account balance validations' do
+  context 'transfer' do
+    let(:transaction_type) { "transfer" }
+    
+    describe 'account balance validations' do
+      context 'enough balance' do
+        it 'should have status = success' do
+          subject.save
+          expect(subject.status).to eq("success")
+        end
 
-    context 'enough balance' do
-      it 'should have status = success' do
-        subject.save
-        expect(subject.status).to eq("success")
+        it 'should change from_account balance' do
+          expect{ subject.save }.to change { from_account.balance }.by(-amount)
+        end
+
+        it 'should change to_account balance' do
+          expect{ subject.save }.to change { to_account.balance }.by(amount)
+        end
       end
+      
+      context 'not enough balance' do
+        let(:amount) { balance + 1 }
 
-      it 'should change from_account balance' do
-        expect{ subject.save }.to change { from_account.balance }.by(-amount)
-      end
+        it 'should have status = error' do
+          subject.save
+          expect(subject.status).to eq("error")
+        end
 
-      it 'should change to_account balance' do
-        expect{ subject.save }.to change { to_account.balance }.by(amount)
+        it 'should\'t change from_account balance' do
+          expect{ subject.save }.not_to change { from_account.balance }
+        end
+
+        it 'should\'t change to_account balance' do
+          expect{ subject.save }.not_to change { to_account.balance }
+        end
       end
     end
-    
-    context 'not enough balance' do
-      let(:amount) { balance + 1 }
+  end
 
-      it 'should have status = error' do
+  context 'credit_card' do
+    let(:transaction_type) { "credit_card" }
+    let(:from_account) { nil }
+    let(:credit_card) { create(:credit_card) }
+
+    describe 'success' do
+      it 'should update transaction status to success' do
         subject.save
-        expect(subject.status).to eq("error")
+        expect(subject.success?).to be_truthy
       end
+    end
 
-      it 'should\'t change from_account balance' do
-        expect{ subject.save }.not_to change { from_account.balance }
-      end
-
-      it 'should\'t change to_account balance' do
-        expect{ subject.save }.not_to change { to_account.balance }
+    describe 'account balance' do
+      it "should add amount to to_account balance" do
+        expect{ subject.save }.to change{ to_account.balance }.by(amount)
       end
     end
   end
