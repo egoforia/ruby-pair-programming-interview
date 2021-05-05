@@ -2,6 +2,8 @@ class CreditCard < ApplicationRecord
   belongs_to :user
 
   validates :user, :holder_name, :last_digits, :expiration_date, presence: true
+  validates_length_of :last_digits, is: 4
+
   validate :expiration_date_cannot_be_in_the_past
 
   private
