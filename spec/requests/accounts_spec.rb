@@ -13,15 +13,20 @@ require 'rails_helper'
 # sticking to rails and rspec-rails APIs to keep things simple and stable.
 
 RSpec.describe "/accounts", type: :request do
+  let(:user) { create(:user) }
   # This should return the minimal set of attributes required to create a valid
   # Account. As you add validations to Account, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
-    skip("Add a hash of attributes valid for your model")
+    {
+      user_id: user.id
+    }
   }
 
   let(:invalid_attributes) {
-    skip("Add a hash of attributes invalid for your model")
+    {
+      user_id: nil
+    }
   }
 
   # This should return the minimal set of values that should be in the headers
@@ -61,7 +66,7 @@ RSpec.describe "/accounts", type: :request do
         post accounts_url,
              params: { account: valid_attributes }, headers: valid_headers, as: :json
         expect(response).to have_http_status(:created)
-        expect(response.content_type).to match(a_string_including("application/json"))
+        expect(response.content_type).to match(a_string_including("application/json; charset=utf-8"))
       end
     end
 
@@ -77,51 +82,8 @@ RSpec.describe "/accounts", type: :request do
         post accounts_url,
              params: { account: invalid_attributes }, headers: valid_headers, as: :json
         expect(response).to have_http_status(:unprocessable_entity)
-        expect(response.content_type).to eq("application/json")
+        expect(response.content_type).to eq("application/json; charset=utf-8")
       end
-    end
-  end
-
-  describe "PATCH /update" do
-    context "with valid parameters" do
-      let(:new_attributes) {
-        skip("Add a hash of attributes valid for your model")
-      }
-
-      it "updates the requested account" do
-        account = Account.create! valid_attributes
-        patch account_url(account),
-              params: { account: new_attributes }, headers: valid_headers, as: :json
-        account.reload
-        skip("Add assertions for updated state")
-      end
-
-      it "renders a JSON response with the account" do
-        account = Account.create! valid_attributes
-        patch account_url(account),
-              params: { account: new_attributes }, headers: valid_headers, as: :json
-        expect(response).to have_http_status(:ok)
-        expect(response.content_type).to match(a_string_including("application/json"))
-      end
-    end
-
-    context "with invalid parameters" do
-      it "renders a JSON response with errors for the account" do
-        account = Account.create! valid_attributes
-        patch account_url(account),
-              params: { account: invalid_attributes }, headers: valid_headers, as: :json
-        expect(response).to have_http_status(:unprocessable_entity)
-        expect(response.content_type).to eq("application/json")
-      end
-    end
-  end
-
-  describe "DELETE /destroy" do
-    it "destroys the requested account" do
-      account = Account.create! valid_attributes
-      expect {
-        delete account_url(account), headers: valid_headers, as: :json
-      }.to change(Account, :count).by(-1)
     end
   end
 end
