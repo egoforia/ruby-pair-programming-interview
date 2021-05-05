@@ -13,15 +13,26 @@ require 'rails_helper'
 # sticking to rails and rspec-rails APIs to keep things simple and stable.
 
 RSpec.describe "/credit_cards", type: :request do
+  let(:user) { create(:user) }
   # This should return the minimal set of attributes required to create a valid
   # CreditCard. As you add validations to CreditCard, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
-    skip("Add a hash of attributes valid for your model")
+    {
+      last_digits: Faker::Finance.credit_card.last(4),
+      expiration_date: Faker::Date.between(from: Date.today, to: 5.years.from_now),
+      holder_name: Faker::Name.name,
+      user_id: user.id
+    }
   }
 
   let(:invalid_attributes) {
-    skip("Add a hash of attributes invalid for your model")
+    {
+      last_digits: nil,
+      expiration_date: nil,
+      holder_name: nil,
+      user_id: nil
+    }
   }
 
   # This should return the minimal set of values that should be in the headers
@@ -61,7 +72,7 @@ RSpec.describe "/credit_cards", type: :request do
         post credit_cards_url,
              params: { credit_card: valid_attributes }, headers: valid_headers, as: :json
         expect(response).to have_http_status(:created)
-        expect(response.content_type).to match(a_string_including("application/json"))
+        expect(response.content_type).to match(a_string_including("application/json; charset=utf-8"))
       end
     end
 
@@ -77,7 +88,7 @@ RSpec.describe "/credit_cards", type: :request do
         post credit_cards_url,
              params: { credit_card: invalid_attributes }, headers: valid_headers, as: :json
         expect(response).to have_http_status(:unprocessable_entity)
-        expect(response.content_type).to eq("application/json")
+        expect(response.content_type).to eq("application/json; charset=utf-8")
       end
     end
   end
@@ -101,7 +112,7 @@ RSpec.describe "/credit_cards", type: :request do
         patch credit_card_url(credit_card),
               params: { credit_card: new_attributes }, headers: valid_headers, as: :json
         expect(response).to have_http_status(:ok)
-        expect(response.content_type).to match(a_string_including("application/json"))
+        expect(response.content_type).to match(a_string_including("application/json; charset=utf-8"))
       end
     end
 
@@ -111,7 +122,7 @@ RSpec.describe "/credit_cards", type: :request do
         patch credit_card_url(credit_card),
               params: { credit_card: invalid_attributes }, headers: valid_headers, as: :json
         expect(response).to have_http_status(:unprocessable_entity)
-        expect(response.content_type).to eq("application/json")
+        expect(response.content_type).to eq("application/json; charset=utf-8")
       end
     end
   end
