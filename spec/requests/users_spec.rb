@@ -17,11 +17,17 @@ RSpec.describe "/users", type: :request do
   # User. As you add validations to User, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) {
-    skip("Add a hash of attributes valid for your model")
+    {
+      first_name: Faker::Name.first_name,
+      last_name: Faker::Name.last_name
+    }
   }
 
   let(:invalid_attributes) {
-    skip("Add a hash of attributes invalid for your model")
+    {
+      first_name: nil,
+      last_name: nil
+    }
   }
 
   # This should return the minimal set of values that should be in the headers
@@ -61,7 +67,7 @@ RSpec.describe "/users", type: :request do
         post users_url,
              params: { user: valid_attributes }, headers: valid_headers, as: :json
         expect(response).to have_http_status(:created)
-        expect(response.content_type).to match(a_string_including("application/json"))
+        expect(response.content_type).to match(a_string_including("application/json; charset=utf-8"))
       end
     end
 
@@ -77,7 +83,7 @@ RSpec.describe "/users", type: :request do
         post users_url,
              params: { user: invalid_attributes }, headers: valid_headers, as: :json
         expect(response).to have_http_status(:unprocessable_entity)
-        expect(response.content_type).to eq("application/json")
+        expect(response.content_type).to eq("application/json; charset=utf-8")
       end
     end
   end
@@ -85,7 +91,10 @@ RSpec.describe "/users", type: :request do
   describe "PATCH /update" do
     context "with valid parameters" do
       let(:new_attributes) {
-        skip("Add a hash of attributes valid for your model")
+        {
+          first_name: Faker::Name.first_name,
+          last_name: Faker::Name.last_name
+        }
       }
 
       it "updates the requested user" do
@@ -93,7 +102,8 @@ RSpec.describe "/users", type: :request do
         patch user_url(user),
               params: { user: new_attributes }, headers: valid_headers, as: :json
         user.reload
-        skip("Add assertions for updated state")
+        expect(user.first_name).to eq(new_attributes[:first_name])
+        expect(user.last_name).to eq(new_attributes[:last_name])
       end
 
       it "renders a JSON response with the user" do
@@ -101,7 +111,7 @@ RSpec.describe "/users", type: :request do
         patch user_url(user),
               params: { user: new_attributes }, headers: valid_headers, as: :json
         expect(response).to have_http_status(:ok)
-        expect(response.content_type).to match(a_string_including("application/json"))
+        expect(response.content_type).to match(a_string_including("application/json; charset=utf-8"))
       end
     end
 
@@ -111,7 +121,7 @@ RSpec.describe "/users", type: :request do
         patch user_url(user),
               params: { user: invalid_attributes }, headers: valid_headers, as: :json
         expect(response).to have_http_status(:unprocessable_entity)
-        expect(response.content_type).to eq("application/json")
+        expect(response.content_type).to eq("application/json; charset=utf-8")
       end
     end
   end
