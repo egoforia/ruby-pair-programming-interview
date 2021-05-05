@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :credit_cards
   resources :transactions, only: [:index, :create, :show]
   resources :accounts, only: [:index, :create, :show]
   resources :users
