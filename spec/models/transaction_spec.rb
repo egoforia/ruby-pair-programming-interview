@@ -15,6 +15,17 @@ RSpec.describe Transaction, type: :model do
     it { should belong_to(:to_account) }
   end
 
+  describe 'enums' do
+    it do
+      should define_enum_for(:status).
+        with_values([:pending, :success, :error])
+    end
+    it do
+      should define_enum_for(:transaction_type).
+        with_values([:transfer, :credit_card])
+    end
+  end
+
   describe 'account balance validations' do
 
     context 'enough balance' do
