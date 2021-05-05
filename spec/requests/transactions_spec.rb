@@ -95,47 +95,4 @@ RSpec.describe "/transactions", type: :request do
       end
     end
   end
-
-  describe "PATCH /update" do
-    context "with valid parameters" do
-      let(:new_attributes) {
-        skip("Add a hash of attributes valid for your model")
-      }
-
-      it "updates the requested transaction" do
-        transaction = Transaction.create! valid_attributes
-        patch transaction_url(transaction),
-              params: { transaction: new_attributes }, headers: valid_headers, as: :json
-        transaction.reload
-        skip("Add assertions for updated state")
-      end
-
-      it "renders a JSON response with the transaction" do
-        transaction = Transaction.create! valid_attributes
-        patch transaction_url(transaction),
-              params: { transaction: new_attributes }, headers: valid_headers, as: :json
-        expect(response).to have_http_status(:ok)
-        expect(response.content_type).to match(a_string_including("application/json; charset=utf-8"))
-      end
-    end
-
-    context "with invalid parameters" do
-      it "renders a JSON response with errors for the transaction" do
-        transaction = Transaction.create! valid_attributes
-        patch transaction_url(transaction),
-              params: { transaction: invalid_attributes }, headers: valid_headers, as: :json
-        expect(response).to have_http_status(:unprocessable_entity)
-        expect(response.content_type).to eq("application/json; charset=utf-8")
-      end
-    end
-  end
-
-  describe "DELETE /destroy" do
-    it "destroys the requested transaction" do
-      transaction = Transaction.create! valid_attributes
-      expect {
-        delete transaction_url(transaction), headers: valid_headers, as: :json
-      }.to change(Transaction, :count).by(-1)
-    end
-  end
 end
