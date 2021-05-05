@@ -16,15 +16,15 @@ RSpec.describe TransactionsController, type: :routing do
     end
 
     it "routes to #update via PUT" do
-      expect(put: "/transactions/1").to route_to("transactions#update", id: "1")
+      expect(put: "/transactions/1").not_to be_routable
     end
 
     it "routes to #update via PATCH" do
-      expect(patch: "/transactions/1").to route_to("transactions#update", id: "1")
+      expect(patch: "/transactions/1").not_to be_routable
     end
 
     it "routes to #destroy" do
-      expect(delete: "/transactions/1").to route_to("transactions#destroy", id: "1")
+      expect(delete: "/transactions/1").not_to be_routable
     end
   end
 end
