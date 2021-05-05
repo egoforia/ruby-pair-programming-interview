@@ -1,11 +1,12 @@
 class Transaction < ApplicationRecord
-  belongs_to :from_account, class_name: 'Account'
+  belongs_to :from_account, class_name: 'Account', optional: true
   belongs_to :to_account, class_name: 'Account'
 
   enum status: %i[pending success error], _default: "pending"
-  enum transaction_type: %i[transfer], _default: "transfer" # should we add more transaction types (e.g. credit_card)?
+  enum transaction_type: %i[transfer credit_card], _default: "transfer"
 
-  after_save :transfer_balance, if: :pending?
+  after_save :transfer_balance, if: -> { transfer? && pending? }
+  after_save :process_credit_card, if: -> { credit_card? && pending? }
 
   private
     def from_account_has_enough_balance?
@@ -21,6 +22,13 @@ class Transaction < ApplicationRecord
         else
           self.error!
         end
+      end
+    end
+
+    def process_credit_card
+      self.transaction do
+        self.to_account.update_attribute(:balance, self.to_account.balance + self.amount)
+        self.success!
       end
     end
 end
