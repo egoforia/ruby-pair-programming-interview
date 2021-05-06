@@ -9,6 +9,7 @@ FactoryBot.define do
     end
 
     factory :credit_card_transaction do
+      credit_card { build(:credit_card) }
       to_account { build(:account) }
       transaction_type { "credit_card" }
     end
