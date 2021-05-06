@@ -5,6 +5,8 @@ Rails.application.routes.draw do
   resources :transactions, only: [:index, :show]
   resources :transactions, only: [:create], path: 'transactions/:transaction_type'
   resources :accounts, only: [:index, :create, :show]
-  resources :users
+  resources :users do
+    get '/balance', to: 'users#balance'
+  end
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end
