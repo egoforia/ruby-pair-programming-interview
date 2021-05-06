@@ -36,7 +36,7 @@ RSpec.describe 'credit_cards', type: :request do
     post('create credit_card') do
       let(:user) { create(:user) }
 
-      tags 'Transactions'
+      tags 'Credit Cards'
       consumes 'application/json'
       produces 'application/json'
       expected_request_schema = SpecSchemas::CreditCardCreateRequest.new
