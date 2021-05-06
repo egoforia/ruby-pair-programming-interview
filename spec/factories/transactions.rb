@@ -1,9 +1,16 @@
 FactoryBot.define do
   factory :transaction do
     amount { "9.99" }
-    from_account { nil }
-    to_account { nil }
-    status { 1 }
-    transaction_type { 1 }
+
+    factory :transfer_transaction do
+      from_account { build(:account) }
+      to_account { build(:account) }
+      transaction_type { "transfer" }
+    end
+
+    factory :credit_card_transaction do
+      to_account { build(:account) }
+      transaction_type { "credit_card" }
+    end
   end
 end
