@@ -784,6 +784,42 @@ paths:
       responses:
         '204':
           description: successful
+  "/users/{user_id}/balance":
+    parameters:
+    - name: user_id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    get:
+      summary: user's balance
+      tags:
+      - Users
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - total
+                properties:
+                  total:
+                    type: string
+                  accounts:
+                    type: array
+                    items:
+                      type: object
+                      required:
+                      - id
+                      - balance
+                      properties:
+                        id:
+                          type: number
+                        balance:
+                          type: string
 servers:
 - url: http://{defaultHost}
   variables:
