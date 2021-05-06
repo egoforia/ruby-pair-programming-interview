@@ -43,4 +43,22 @@ module SpecSchemas
       end
     end
   end
+
+  class UserBalanceResponse
+    include JSON::SchemaBuilder
+
+    def schema
+      object do
+        string :total, required: true
+        array :accounts do
+          items do
+            object do
+              number :id, required: true
+              string :balance, required: true
+            end
+          end
+        end
+      end
+    end
+  end
 end

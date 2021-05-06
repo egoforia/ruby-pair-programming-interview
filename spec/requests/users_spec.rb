@@ -203,4 +203,40 @@ RSpec.describe 'users', type: :request do
       end
     end
   end
+
+  path '/users/{user_id}/balance' do
+    let(:user) { create(:user) }
+    let(:user_id) { user.id }
+    # You'll want to customize the parameter types...
+    parameter name: :user_id, in: :path, type: :string, description: 'id'
+
+    get("user's balance") do
+      tags 'Users'
+      consumes 'application/json'
+      produces 'application/json'
+
+      response(200, 'successful') do
+        expected_response_schema = SpecSchemas::UserBalanceResponse.new
+        schema expected_response_schema.schema.as_json
+
+        before do |example|
+          create(:account_with_balance, balance: 100.0, user: user)
+          create(:account_with_balance, balance: 50.0, user: user)
+        end
+
+        after do |example|
+          example.metadata[:response][:content] = {
+            'application/json' => {
+              example: JSON.parse(response.body, symbolize_names: true)
+            }
+          }
+        end
+        
+        it_behaves_like "a JSON endpoint", 200 do
+          let(:expected_response_schema) { expected_response_schema }
+          let(:expected_request_schema) { nil }
+        end
+      end
+    end
+  end
 end

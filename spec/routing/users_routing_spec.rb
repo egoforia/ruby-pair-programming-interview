@@ -10,7 +10,6 @@ RSpec.describe UsersController, type: :routing do
       expect(get: "/users/1").to route_to("users#show", id: "1")
     end
 
-
     it "routes to #create" do
       expect(post: "/users").to route_to("users#create")
     end
@@ -25,6 +24,10 @@ RSpec.describe UsersController, type: :routing do
 
     it "routes to #destroy" do
       expect(delete: "/users/1").to route_to("users#destroy", id: "1")
+    end
+
+    it "routes to #balance" do
+      expect(get: 'users/1/balance').to route_to('users#balance', user_id: "1")
     end
   end
 end
