@@ -16,15 +16,15 @@ RSpec.describe CreditCardsController, type: :routing do
     end
 
     it "routes to #update via PUT" do
-      expect(put: "/credit_cards/1").to route_to("credit_cards#update", id: "1")
+      expect(put: "/credit_cards/1").not_to be_routable
     end
 
     it "routes to #update via PATCH" do
-      expect(patch: "/credit_cards/1").to route_to("credit_cards#update", id: "1")
+      expect(patch: "/credit_cards/1").not_to be_routable
     end
 
     it "routes to #destroy" do
-      expect(delete: "/credit_cards/1").to route_to("credit_cards#destroy", id: "1")
+      expect(delete: "/credit_cards/1").not_to be_routable
     end
   end
 end
