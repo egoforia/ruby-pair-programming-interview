@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   mount Rswag::Ui::Engine => '/api-docs'
   mount Rswag::Api::Engine => '/api-docs'
-  resources :credit_cards
+  resources :credit_cards, only: [:index, :create, :show]
   resources :transactions, only: [:index, :create, :show]
   resources :accounts, only: [:index, :create, :show]
   resources :users
