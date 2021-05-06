@@ -10,9 +10,12 @@ RSpec.describe TransactionsController, type: :routing do
       expect(get: "/transactions/1").to route_to("transactions#show", id: "1")
     end
 
+    it "routes to #create - transfer" do
+      expect(post: "/transactions/transfer").to route_to("transactions#create", transaction_type: 'transfer')
+    end
 
-    it "routes to #create" do
-      expect(post: "/transactions").to route_to("transactions#create")
+    it "routes to #create - credit card" do
+      expect(post: "/transactions/credit_card").to route_to("transactions#create", transaction_type: 'credit_card')
     end
 
     it "routes to #update via PUT" do

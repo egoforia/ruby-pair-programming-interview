@@ -33,16 +33,21 @@ RSpec.describe 'transactions', type: :request do
         end
       end
     end
+  end
 
-    post('create transaction') do
+  path '/transactions/transfer' do
+
+    post('create transfer transaction') do
       let(:from_account) { create(:account) }
       let(:to_account) { create(:account) }
+      let(:transaction_type) { 'transfer' }
 
       tags 'Transactions'
       consumes 'application/json'
       produces 'application/json'
-      expected_request_schema = SpecSchemas::TransactionCreateRequest.new
+      expected_request_schema = SpecSchemas::TransferTransactionCreateRequest.new
 
+      parameter name: :transaction_type, in: :path, type: :string, description: 'transaction type (transfer or credit_card)' 
       parameter name: :params, in: :body, schema: expected_request_schema.schema.as_json
 
       response(201, 'successful') do
@@ -54,7 +59,59 @@ RSpec.describe 'transactions', type: :request do
             transaction: {
               from_account_id: from_account.id,
               to_account_id: to_account.id,
-              transaction_type: 'transfer',
+              amount: "10.0"
+            }
+          }
+        }
+
+        after do |example|
+          example.metadata[:response][:content] = {
+            'application/json' => {
+              example: JSON.parse(response.body, symbolize_names: true)
+            }
+          }
+        end
+        
+        it_behaves_like "a JSON endpoint", 201 do
+          let(:expected_response_schema) { expected_response_schema }
+          let(:expected_request_schema) { expected_request_schema }
+        end
+      end
+
+      response(422, 'Unprocessable Entity') do
+        let(:params) { 
+          { transaction: { amount: nil } }
+        }
+
+        run_test!
+      end
+    end
+  end
+
+  path '/transactions/credit_card' do
+
+    post('create credit card transaction') do
+      let(:credit_card) { create(:credit_card) }
+      let(:to_account) { create(:account) }
+      let(:transaction_type) { 'credit_card' }
+
+      tags 'Transactions'
+      consumes 'application/json'
+      produces 'application/json'
+      expected_request_schema = SpecSchemas::CreditCardTransactionCreateRequest.new
+
+      parameter name: :transaction_type, in: :path, type: :string, description: 'transaction type (transfer or credit_card)' 
+      parameter name: :params, in: :body, schema: expected_request_schema.schema.as_json
+
+      response(201, 'successful') do
+        expected_response_schema = SpecSchemas::TransactionResponse.new
+        schema expected_response_schema.schema.as_json
+
+        let(:params) { 
+          {
+            transaction: {
+              credit_card_id: credit_card.id,
+              to_account_id: to_account.id,
               amount: "10.0"
             }
           }
