@@ -5,12 +5,12 @@ class AccountsController < ApplicationController
   def index
     @accounts = Account.all
 
-    render json: @accounts
+    render json: @accounts, include: :user
   end
 
   # GET /accounts/1
   def show
-    render json: @account
+    render json: @account, include: :user
   end
 
   # POST /accounts
@@ -18,7 +18,7 @@ class AccountsController < ApplicationController
     @account = Account.new(account_params)
 
     if @account.save
-      render json: @account, status: :created, location: @account
+      render json: @account, status: :created, location: @account, include: :user
     else
       render json: @account.errors, status: :unprocessable_entity
     end
@@ -46,6 +46,6 @@ class AccountsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def account_params
-      params.require(:account).permit(:user_id, :balance)
+      params.require(:account).permit(:user_id)
     end
 end
