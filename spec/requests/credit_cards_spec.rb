@@ -71,6 +71,14 @@ RSpec.describe 'credit_cards', type: :request do
           let(:expected_request_schema) { expected_request_schema }
         end
       end
+
+      response(422, 'Unprocessable Entity') do
+        let(:params) { 
+          { credit_card: { user_id: nil } }
+        }
+
+        run_test!
+      end
     end
   end
 

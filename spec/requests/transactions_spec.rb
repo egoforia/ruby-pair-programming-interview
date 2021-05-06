@@ -73,6 +73,14 @@ RSpec.describe 'transactions', type: :request do
           let(:expected_request_schema) { expected_request_schema }
         end
       end
+
+      response(422, 'Unprocessable Entity') do
+        let(:params) { 
+          { transaction: { amount: nil } }
+        }
+
+        run_test!
+      end
     end
   end
 

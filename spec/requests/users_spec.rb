@@ -46,7 +46,7 @@ RSpec.describe 'users', type: :request do
         schema expected_response_schema.schema.as_json
 
         let(:params) { 
-          { user: { first_name: Faker::Name.last_name, last_name: Faker::Name.last_name } }
+          { user: { first_name: Faker::Name.first_name, last_name: Faker::Name.last_name } }
         }
 
         after do |example|
@@ -61,6 +61,14 @@ RSpec.describe 'users', type: :request do
           let(:expected_response_schema) { expected_response_schema }
           let(:expected_request_schema) { expected_request_schema }
         end
+      end
+
+      response(422, 'Unprocessable Entity') do
+        let(:params) { 
+          { user: { first_name: nil, last_name: nil } }
+        }
+
+        run_test!
       end
     end
   end
@@ -93,6 +101,12 @@ RSpec.describe 'users', type: :request do
           let(:expected_request_schema) { nil }
         end
       end
+
+      # response(404, 'Not Found') do
+      #   let(:id) { -1 } 
+
+      #   run_test!
+      # end
     end
 
     patch('update user') do
@@ -125,6 +139,14 @@ RSpec.describe 'users', type: :request do
           let(:expected_request_schema) { expected_request_schema }
         end
       end
+
+      response(422, 'Unprocessable Entity') do
+        let(:params) { 
+          { user: { first_name: nil, last_name: nil } }
+        }
+
+        run_test!
+      end
     end
 
     put('update user') do
@@ -156,6 +178,14 @@ RSpec.describe 'users', type: :request do
           let(:expected_response_schema) { expected_response_schema }
           let(:expected_request_schema) { expected_request_schema }
         end
+      end
+
+      response(422, 'Unprocessable Entity') do
+        let(:params) { 
+          { user: { first_name: nil, last_name: nil } }
+        }
+
+        run_test!
       end
     end
 
