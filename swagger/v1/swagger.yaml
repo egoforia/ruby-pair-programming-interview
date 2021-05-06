@@ -170,6 +170,145 @@ paths:
                         type: string
                       updated_at:
                         type: string
+  "/credit_cards":
+    get:
+      summary: list credit_cards
+      tags:
+      - Credit Cards
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  required:
+                  - id
+                  - user_id
+                  - expiration_date
+                  - holder_name
+                  - created_at
+                  - updated_at
+                  properties:
+                    id:
+                      type: number
+                    user_id:
+                      type: number
+                    last_digits:
+                      anyOf:
+                      - type: string
+                      - type: 'null'
+                    expiration_date:
+                      type: string
+                    holder_name:
+                      type: string
+                    created_at:
+                      type: string
+                    updated_at:
+                      type: string
+    post:
+      summary: create credit_card
+      tags:
+      - Credit Cards
+      parameters: []
+      responses:
+        '201':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - id
+                - user_id
+                - expiration_date
+                - holder_name
+                - created_at
+                - updated_at
+                properties:
+                  id:
+                    type: number
+                  user_id:
+                    type: number
+                  last_digits:
+                    anyOf:
+                    - type: string
+                    - type: 'null'
+                  expiration_date:
+                    type: string
+                  holder_name:
+                    type: string
+                  created_at:
+                    type: string
+                  updated_at:
+                    type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                credit_card:
+                  type: object
+                  required:
+                  - user_id
+                  - last_digits
+                  - holder_name
+                  - expiration_date
+                  properties:
+                    user_id:
+                      type: number
+                    last_digits:
+                      type: string
+                    holder_name:
+                      type: string
+                    expiration_date:
+                      type: string
+  "/credit_cards/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    get:
+      summary: show credit_card
+      tags:
+      - Credit Cards
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - id
+                - user_id
+                - expiration_date
+                - holder_name
+                - created_at
+                - updated_at
+                properties:
+                  id:
+                    type: number
+                  user_id:
+                    type: number
+                  last_digits:
+                    anyOf:
+                    - type: string
+                    - type: 'null'
+                  expiration_date:
+                    type: string
+                  holder_name:
+                    type: string
+                  created_at:
+                    type: string
+                  updated_at:
+                    type: string
   "/transactions":
     get:
       summary: list transactions
@@ -377,6 +516,8 @@ paths:
                     type: string
                   updated_at:
                     type: string
+        '422':
+          description: Unprocessable Entity
       requestBody:
         content:
           application/json:
