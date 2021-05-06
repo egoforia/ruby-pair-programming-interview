@@ -102,6 +102,8 @@ paths:
                         type: string
                       updated_at:
                         type: string
+        '422':
+          description: Unprocessable Entity
       requestBody:
         content:
           application/json:
@@ -244,6 +246,8 @@ paths:
                     type: string
                   updated_at:
                     type: string
+        '422':
+          description: Unprocessable Entity
       requestBody:
         content:
           application/json:
@@ -340,6 +344,10 @@ paths:
                       - type: 'null'
                     to_account_id:
                       type: number
+                    credit_card_id:
+                      anyOf:
+                      - type: number
+                      - type: 'null'
                     status:
                       type: string
                     transaction_type:
@@ -350,11 +358,18 @@ paths:
                       type: string
                     updated_at:
                       type: string
+  "/transactions/transfer":
     post:
-      summary: create transaction
+      summary: create transfer transaction
       tags:
       - Transactions
-      parameters: []
+      parameters:
+      - name: transaction_type
+        in: path
+        description: transaction type (transfer or credit_card)
+        required: true
+        schema:
+          type: string
       responses:
         '201':
           description: successful
@@ -379,6 +394,10 @@ paths:
                     - type: 'null'
                   to_account_id:
                     type: number
+                  credit_card_id:
+                    anyOf:
+                    - type: number
+                    - type: 'null'
                   status:
                     type: string
                   transaction_type:
@@ -389,6 +408,79 @@ paths:
                     type: string
                   updated_at:
                     type: string
+        '422':
+          description: Unprocessable Entity
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                transaction:
+                  type: object
+                  required:
+                  - from_account_id
+                  - to_account_id
+                  - amount
+                  properties:
+                    from_account_id:
+                      type: number
+                    to_account_id:
+                      type: number
+                    amount:
+                      type: string
+  "/transactions/credit_card":
+    post:
+      summary: create credit card transaction
+      tags:
+      - Transactions
+      parameters:
+      - name: transaction_type
+        in: path
+        description: transaction type (transfer or credit_card)
+        required: true
+        schema:
+          type: string
+      responses:
+        '201':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - id
+                - to_account_id
+                - status
+                - transaction_type
+                - amount
+                - created_at
+                - updated_at
+                properties:
+                  id:
+                    type: number
+                  from_account_id:
+                    anyOf:
+                    - type: number
+                    - type: 'null'
+                  to_account_id:
+                    type: number
+                  credit_card_id:
+                    anyOf:
+                    - type: number
+                    - type: 'null'
+                  status:
+                    type: string
+                  transaction_type:
+                    type: string
+                  amount:
+                    type: string
+                  created_at:
+                    type: string
+                  updated_at:
+                    type: string
+        '422':
+          description: Unprocessable Entity
       requestBody:
         content:
           application/json:
@@ -399,16 +491,14 @@ paths:
                   type: object
                   required:
                   - to_account_id
+                  - credit_card_id
                   - amount
-                  - transaction_type
                   properties:
-                    from_account_id:
-                      type: number
                     to_account_id:
                       type: number
+                    credit_card_id:
+                      type: number
                     amount:
-                      type: string
-                    transaction_type:
                       type: string
   "/transactions/{id}":
     parameters:
@@ -446,6 +536,10 @@ paths:
                     - type: 'null'
                   to_account_id:
                     type: number
+                  credit_card_id:
+                    anyOf:
+                    - type: number
+                    - type: 'null'
                   status:
                     type: string
                   transaction_type:
@@ -605,6 +699,8 @@ paths:
                     type: string
                   updated_at:
                     type: string
+        '422':
+          description: Unprocessable Entity
       requestBody:
         content:
           application/json:
@@ -656,6 +752,8 @@ paths:
                     type: string
                   updated_at:
                     type: string
+        '422':
+          description: Unprocessable Entity
       requestBody:
         content:
           application/json:
