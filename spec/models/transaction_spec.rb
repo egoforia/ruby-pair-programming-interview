@@ -10,11 +10,22 @@ RSpec.describe Transaction, type: :model do
 
   let(:transaction_type) { "transfer" }
 
-  subject { described_class.new(amount: amount, from_account: from_account, to_account: to_account, transaction_type: transaction_type) }
+  let(:credit_card) { nil }
+
+  subject { 
+    described_class.new(
+      amount: amount, 
+      from_account: from_account, 
+      to_account: to_account, 
+      transaction_type: transaction_type,
+      credit_card: credit_card 
+    )
+  }
 
   describe 'associations' do
     it { should belong_to(:from_account).optional }
     it { should belong_to(:to_account) }
+    it { should belong_to(:credit_card).optional }
   end
 
   describe 'enums' do
@@ -75,6 +86,17 @@ RSpec.describe Transaction, type: :model do
       it 'should update transaction status to success' do
         subject.save
         expect(subject.success?).to be_truthy
+      end
+    end
+
+    describe 'validations' do
+      context 'credit_card presence' do
+        let(:credit_card) { nil }
+
+        it 'should have credit card' do
+          expect(subject).not_to be_valid
+          expect(subject.errors.messages[:credit_card]).to include("can't be blank")
+        end
       end
     end
 
