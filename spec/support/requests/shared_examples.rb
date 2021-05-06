@@ -23,7 +23,7 @@ RSpec.shared_examples "a JSON endpoint" do |expected_response_status|
     let(:json_response) { JSON.parse(response.body) }
 
     it "matches the documented response schema" do  |example|
-      unless expected_request_schema.nil?
+      unless expected_response_schema.nil?
         errors = expected_response_schema.schema.fully_validate(json_response)
         puts json_response if errors.count > 0 # for debugging
         expect(errors).to be_empty
