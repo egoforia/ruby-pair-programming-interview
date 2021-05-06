@@ -4,6 +4,172 @@ info:
   title: API V1
   version: v1
 paths:
+  "/accounts":
+    get:
+      summary: list accounts
+      tags:
+      - Accounts
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  required:
+                  - id
+                  - balance
+                  - created_at
+                  - updated_at
+                  - user_id
+                  properties:
+                    id:
+                      type: number
+                    balance:
+                      type: string
+                    created_at:
+                      type: string
+                    updated_at:
+                      type: string
+                    user_id:
+                      type: number
+                    user:
+                      type: object
+                      required:
+                      - id
+                      - first_name
+                      - last_name
+                      - created_at
+                      - updated_at
+                      properties:
+                        id:
+                          type: number
+                        first_name:
+                          type: string
+                        last_name:
+                          type: string
+                        created_at:
+                          type: string
+                        updated_at:
+                          type: string
+    post:
+      summary: create account
+      tags:
+      - Accounts
+      parameters: []
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - id
+                - balance
+                - created_at
+                - updated_at
+                - user_id
+                properties:
+                  id:
+                    type: number
+                  balance:
+                    type: string
+                  created_at:
+                    type: string
+                  updated_at:
+                    type: string
+                  user_id:
+                    type: number
+                  user:
+                    type: object
+                    required:
+                    - id
+                    - first_name
+                    - last_name
+                    - created_at
+                    - updated_at
+                    properties:
+                      id:
+                        type: number
+                      first_name:
+                        type: string
+                      last_name:
+                        type: string
+                      created_at:
+                        type: string
+                      updated_at:
+                        type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                account:
+                  type: object
+                  required:
+                  - user_id
+                  properties:
+                    user_id:
+                      type: number
+  "/accounts/{id}":
+    parameters:
+    - name: id
+      in: path
+      description: id
+      required: true
+      schema:
+        type: string
+    get:
+      summary: show account
+      tags:
+      - Accounts
+      responses:
+        '200':
+          description: successful
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                - id
+                - balance
+                - created_at
+                - updated_at
+                - user_id
+                properties:
+                  id:
+                    type: number
+                  balance:
+                    type: string
+                  created_at:
+                    type: string
+                  updated_at:
+                    type: string
+                  user_id:
+                    type: number
+                  user:
+                    type: object
+                    required:
+                    - id
+                    - first_name
+                    - last_name
+                    - created_at
+                    - updated_at
+                    properties:
+                      id:
+                        type: number
+                      first_name:
+                        type: string
+                      last_name:
+                        type: string
+                      created_at:
+                        type: string
+                      updated_at:
+                        type: string
   "/users":
     get:
       summary: list users
