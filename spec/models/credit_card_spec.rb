@@ -14,7 +14,7 @@ RSpec.describe CreditCard, type: :model do
     it { should validate_presence_of(:expiration_date) }
 
     context 'invalid expiration date' do
-      let(:expiration_date) { Date.yesterday }
+      let(:expiration_date) { 1.year.ago }
 
       subject { build(:credit_card, expiration_date: expiration_date) }
       
