@@ -9,6 +9,7 @@ module SpecSchemas
             number :id, required: true
             number :from_account_id, null: true
             number :to_account_id, required: true
+            number :credit_card_id, null: true
             string :status, required: true
             string :transaction_type, required: true
             string :amount, required: true
@@ -20,16 +21,29 @@ module SpecSchemas
     end
   end
 
-  class TransactionCreateRequest
+  class TransferTransactionCreateRequest
     include JSON::SchemaBuilder
 
     def schema
       object do
         object :transaction do
-          number :from_account_id
+          number :from_account_id, required: true
           number :to_account_id, required: true
           string :amount, required: true
-          string :transaction_type, required: true
+        end
+      end
+    end
+  end
+
+  class CreditCardTransactionCreateRequest
+    include JSON::SchemaBuilder
+
+    def schema
+      object do
+        object :transaction do
+          number :to_account_id, required: true
+          number :credit_card_id, required: true
+          string :amount, required: true
         end
       end
     end
@@ -43,6 +57,7 @@ module SpecSchemas
         number :id, required: true
         number :from_account_id, null: true
         number :to_account_id, required: true
+        number :credit_card_id, null: true
         string :status, required: true
         string :transaction_type, required: true
         string :amount, required: true
