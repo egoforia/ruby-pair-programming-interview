@@ -258,13 +258,13 @@ paths:
                   type: object
                   required:
                   - user_id
-                  - last_digits
+                  - number
                   - holder_name
                   - expiration_date
                   properties:
                     user_id:
                       type: number
-                    last_digits:
+                    number:
                       type: string
                     holder_name:
                       type: string
