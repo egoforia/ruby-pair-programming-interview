@@ -9,6 +9,7 @@ module SpecSchemas
             number :id, required: true
             number :user_id, required: true
             string :last_digits, null: true
+            # string :number, required: true
             string :expiration_date, required: true
             string :holder_name, required: true
             string :created_at, required: true
@@ -26,7 +27,7 @@ module SpecSchemas
       object do
         object :credit_card do
           number :user_id, required: true
-          string :last_digits, required: true
+          string :number, required: true
           string :holder_name, required: true
           string :expiration_date, required: true
         end
