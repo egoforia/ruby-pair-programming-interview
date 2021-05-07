@@ -8,10 +8,11 @@ RSpec.describe CreditCard, type: :model do
 
   describe 'validations' do
     it { should validate_presence_of(:user) }
-    it { should validate_presence_of(:last_digits) }
+    # it { should validate_presence_of(:last_digits) }
     it { should validate_length_of(:last_digits).is_equal_to(4) }
     it { should validate_presence_of(:holder_name) }
     it { should validate_presence_of(:expiration_date) }
+    it { should validate_presence_of(:expiration_date).on(:create) }
 
     context 'invalid expiration date' do
       let(:expiration_date) { 1.year.ago }
@@ -22,6 +23,15 @@ RSpec.describe CreditCard, type: :model do
         expect(subject).to_not be_valid
         expect(subject.errors.messages[:expiration_date]).to include("can't be in the past")
       end
+    end
+  end
+
+  describe 'set last digits on create' do
+    subject { build(:credit_card, last_digits: nil, number: '1234-1234-5678-5678') }
+
+    it 'should set last digits' do
+      subject.save
+      expect(subject.last_digits).to eq('5678')
     end
   end
 end
