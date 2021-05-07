@@ -5,6 +5,7 @@
   - [Considerations](#considerations)
     - [Auth](#auth)
     - [Transactions](#transactions)
+    - [Database Optimization](#database-optimization)
   - [Test Scenarios](#tests-scenarios)
   - [API](#api)
   - [Conclusion](#conclusion)
@@ -72,6 +73,25 @@ def process_credit_card
 end
 ```
 
+### Database Optimization
+
+How can we optimize the database?
+
+To answer that question, we first need to answer another question: what needs to be optimized?
+
+The first thing to note is the query execution time and the response time for API requests that can lead to low performance queries.
+
+After finding queries that need optimization, we can analyze them with the command slql [`EXPLAIN`](https://www.postgresql.org/docs/current/sql-explain.html) to better understand its execution, time of execution and cost and to find out where the bottlenecks are
+
+Some common approaches to improve bottlenecks are:
+  - Create database indexes on fields that are widely used in WHERE, HAVING and ORDER BY
+  - Create database views to avoid making complex queries with JOINs (we can use this [gem](https://github.com/scenic-views/scenic) to manage views in Rails)
+  - Create database procedures to take part of our business logic at the database level
+
+One more thing that we can consider to improve performance is to use Redis as a queue or a job scheduler like Sidekiq. It can be useful in performance, especially if we have a high volume of simultaneous transactions. We can refactor transactions to be asynchronous and control processing based on demand
+
+It all depends on our user cases and bottlenecks
+
 ## API
 
 API is documented with Swagger using the gem [rswag](https://github.com/rswag/rswag)
@@ -85,5 +105,9 @@ Tests has been written using [rspec-rails](https://github.com/rspec/rspec-rails)
 I've used the [rspec DSL of rswag](https://github.com/rswag/rswag#the-rspec-dsl) to write request specs and to guarantee that Swagger documentation and the tests are in sync
 
 ## Conclusion
+ 
+It was fun to develop this challenge and was really nice to talk with you all during the interviews
 
-I really appreciate the opportunity to make this challenge and I'm looking forward to join Paywith team
+I really appreciate the opportunity and I'm looking forward to join PayWith team
+
+Cheers, Diego 🍻
