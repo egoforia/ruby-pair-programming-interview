@@ -43,7 +43,7 @@ I'm open to discuss authentication if you want
 
 I've write up some pseudocode to demonstrate how transactions would be processed and have considerated that it would be synchronous for this challenge. The following code can be found on [transaction model](https://github.com/egoforia/ruby-pair-programming-interview/blob/development/app/models/transaction.rb).
 
-The logic is encapsulated on a database transaction to make atomic changes on database to avoid any error that could happen on the process and to assure countability
+The logic is encapsulated on a database transaction to make atomic changes on database to avoid any error that could happen on the process and to ensure accountability
 
 And it can be easily refactored if we want to transactions be asynchronous on the future
 
