@@ -18,11 +18,10 @@ class Transaction < ApplicationRecord
 
     def transfer_balance
       self.transaction do
-        if self.from_account_has_enough_balance?
-          self.from_account.update_attribute(:balance, self.from_account.balance - self.amount)
-          self.to_account.update_attribute(:balance, self.to_account.balance + self.amount)
+        begin
+          self.from_account.transfer(self.amount, self.to_account)
           self.success!
-        else
+        rescue
           self.error!
         end
       end
@@ -30,7 +29,7 @@ class Transaction < ApplicationRecord
 
     def process_credit_card
       self.transaction do
-        self.to_account.update_attribute(:balance, self.to_account.balance + self.amount)
+        self.to_account.deposit(self.amount)
         self.success!
       end
     end
