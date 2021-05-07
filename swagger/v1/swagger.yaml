@@ -189,7 +189,8 @@ paths:
                   required:
                   - id
                   - user_id
-                  - expiration_date
+                  - expiration_month
+                  - expiration_year
                   - holder_name
                   - created_at
                   - updated_at
@@ -202,8 +203,10 @@ paths:
                       anyOf:
                       - type: string
                       - type: 'null'
-                    expiration_date:
-                      type: string
+                    expiration_month:
+                      type: number
+                    expiration_year:
+                      type: number
                     holder_name:
                       type: string
                     created_at:
@@ -225,7 +228,8 @@ paths:
                 required:
                 - id
                 - user_id
-                - expiration_date
+                - expiration_month
+                - expiration_year
                 - holder_name
                 - created_at
                 - updated_at
@@ -238,8 +242,10 @@ paths:
                     anyOf:
                     - type: string
                     - type: 'null'
-                  expiration_date:
-                    type: string
+                  expiration_month:
+                    type: number
+                  expiration_year:
+                    type: number
                   holder_name:
                     type: string
                   created_at:
@@ -260,7 +266,8 @@ paths:
                   - user_id
                   - number
                   - holder_name
-                  - expiration_date
+                  - expiration_month
+                  - expiration_year
                   properties:
                     user_id:
                       type: number
@@ -268,8 +275,10 @@ paths:
                       type: string
                     holder_name:
                       type: string
-                    expiration_date:
-                      type: string
+                    expiration_month:
+                      type: number
+                    expiration_year:
+                      type: number
   "/credit_cards/{id}":
     parameters:
     - name: id
@@ -292,7 +301,8 @@ paths:
                 required:
                 - id
                 - user_id
-                - expiration_date
+                - expiration_month
+                - expiration_year
                 - holder_name
                 - created_at
                 - updated_at
@@ -305,8 +315,10 @@ paths:
                     anyOf:
                     - type: string
                     - type: 'null'
-                  expiration_date:
-                    type: string
+                  expiration_month:
+                    type: number
+                  expiration_year:
+                    type: number
                   holder_name:
                     type: string
                   created_at:
