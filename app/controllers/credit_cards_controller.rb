@@ -5,12 +5,12 @@ class CreditCardsController < ApplicationController
   def index
     @credit_cards = CreditCard.all
 
-    render json: @credit_cards
+    render json: @credit_cards.as_json(except: [ :number ])
   end
 
   # GET /credit_cards/1
   def show
-    render json: @credit_card
+    render json: @credit_card.as_json(except: :number)
   end
 
   # POST /credit_cards
@@ -18,7 +18,7 @@ class CreditCardsController < ApplicationController
     @credit_card = CreditCard.new(credit_card_params)
 
     if @credit_card.save
-      render json: @credit_card, status: :created, location: @credit_card
+      render json: @credit_card.as_json(except: :number), status: :created, location: @credit_card
     else
       render json: @credit_card.errors, status: :unprocessable_entity
     end
@@ -27,7 +27,7 @@ class CreditCardsController < ApplicationController
   # PATCH/PUT /credit_cards/1
   def update
     if @credit_card.update(credit_card_params)
-      render json: @credit_card
+      render json: @credit_card.as_json(except: :number)
     else
       render json: @credit_card.errors, status: :unprocessable_entity
     end
@@ -46,6 +46,6 @@ class CreditCardsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def credit_card_params
-      params.require(:credit_card).permit(:last_digits, :expiration_date, :holder_name, :user_id)
+      params.require(:credit_card).permit(:number, :expiration_date, :holder_name, :user_id)
     end
 end
