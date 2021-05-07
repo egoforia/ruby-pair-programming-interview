@@ -9,8 +9,8 @@ module SpecSchemas
             number :id, required: true
             number :user_id, required: true
             string :last_digits, null: true
-            # string :number, required: true
-            string :expiration_date, required: true
+            number :expiration_month, required: true
+            number :expiration_year, required: true
             string :holder_name, required: true
             string :created_at, required: true
             string :updated_at, required: true
@@ -29,7 +29,8 @@ module SpecSchemas
           number :user_id, required: true
           string :number, required: true
           string :holder_name, required: true
-          string :expiration_date, required: true
+          number :expiration_month, required: true
+          number :expiration_year, required: true
         end
       end
     end
@@ -43,7 +44,8 @@ module SpecSchemas
         number :id, required: true
             number :user_id, required: true
             string :last_digits, null: true
-            string :expiration_date, required: true
+            number :expiration_month, required: true
+            number :expiration_year, required: true
             string :holder_name, required: true
             string :created_at, required: true
             string :updated_at, required: true

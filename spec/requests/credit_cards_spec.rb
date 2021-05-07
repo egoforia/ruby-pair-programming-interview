@@ -51,7 +51,8 @@ RSpec.describe 'credit_cards', type: :request do
           {
             credit_card: {
               number: Faker::Finance.credit_card,
-              expiration_date: Faker::Date.between(from: Date.today, to: 5.years.from_now).to_s,
+              expiration_month: 1,
+              expiration_year: 2.years.from_now.year,
               holder_name: Faker::Name.name,
               user_id: user.id
             }
